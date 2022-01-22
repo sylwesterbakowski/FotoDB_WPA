@@ -1,5 +1,6 @@
 ﻿using FotoDB_WPA.ILogic;
 using FotoDB_WPA.Logic;
+using FotoDB_WPA.Logic.Design_Patterns.Observer;
 using FotoDB_WPA.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -231,7 +232,20 @@ namespace FotoDB_WPA.Controllers
         {
             //var manager = new AutorManager();
             //manager.UpdateAutor(autor);
+
+            Console.WriteLine("Dodawanie Obserwatorów ...");
+            var smsObserver = new SmsObserver();
+            var emailObserver = new EmailObserver();
+
+            _autorManager.Attach(smsObserver);
+            _autorManager.Attach(emailObserver);
+
+            Console.WriteLine("Zmiana parametrów autora");
+
             _autorManager.UpdateAutor(autor);
+
+            _autorManager.Detach(smsObserver);
+            _autorManager.Detach(emailObserver);
             return RedirectToAction("Index");
         }
 

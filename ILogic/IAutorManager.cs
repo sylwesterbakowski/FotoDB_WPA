@@ -1,11 +1,12 @@
 ﻿using FotoDB_WPA.Logic;
+using FotoDB_WPA.Logic.Design_Patterns.Observer;
 using FotoDB_WPA.Models;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Collections.Generic;
 
 namespace FotoDB_WPA.ILogic
 {
-    public interface IAutorManager
+    public interface IAutorManager:IAutorModelNotifier
     {
         IEnumerable<SelectListItem> GetListKrajs();
         AutorManager AddAutor(AutorModel autorModel);

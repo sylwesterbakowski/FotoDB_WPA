@@ -34,26 +34,55 @@ namespace FotoDB_WPA
                 (options => options.UseSqlServer(Configuration.GetConnectionString("Default")));
 
             services.AddScoped<IKrajManager, KrajManager>();
+            ///Testowanie wzorca Obserwator
             services.AddScoped<IAutorManager, AutorManager>();
             services.AddScoped<IFotoManager, FotoManager>();
 
             services.AddControllersWithViews();
 
-            services.AddScoped<KrajManager>();
 
-            services.AddScoped(krajProvider =>
+            ///Testowanie wzorca Dekorator
+            ///Rêczne dodawanie dekoratorów
+            ///
+            //services.AddScoped<KrajManager>();
+
+            //services.AddScoped(krajProvider =>
+            //{
+            //    var memoryCache = krajProvider.GetService<IMemoryCache>();
+            //    var logger = krajProvider.GetService<ILogger<KrajManagerLoggingDecorator>>();
+
+            //    KrajManager krajManager = krajProvider.GetRequiredService<KrajManager>();
+
+            //    IKrajManager cachingDecorator = new KrajManagerCachingDecorator(krajManager, memoryCache);
+            //    IKrajManager loggingDecorator = new KrajManagerLoggingDecorator(krajManager, logger);
+
+            //    return loggingDecorator;
+
+            //});
+
+            ///Dodawanie dekoratorów za pomoc¹ biblioteki Scrutor
+            ///
+            //services.Decorate<IKrajManager, KrajManagerCachingDecorator>();
+            //services.Decorate<IKrajManager, KrajManagerLoggingDecorator>();
+
+
+            ///Dodawanie dekoratorów za pomoc¹ biblioteki Scrutor w zale¿noœci od ustawieñ w pliku appsettings.json
+            ///
+            if (Convert.ToBoolean(Configuration["EnableCaching"]))
             {
-                var memoryCache = krajProvider.GetService<IMemoryCache>();
-                var logger = krajProvider.GetService<ILogger<KrajManagerLoggingDecorator>>();
+                services.Decorate<IKrajManager, KrajManagerCachingDecorator>();
+            }
+            if (Convert.ToBoolean(Configuration["EnableLogging"]))
+            {
+                services.Decorate<IKrajManager, KrajManagerLoggingDecorator>();
+                services.Decorate<IAutorManager, AutorManagerLoggingDecorator>();
+            }
 
-                KrajManager krajManager = krajProvider.GetRequiredService<KrajManager>();
 
-                IKrajManager cachingDecorator = new KrajManagerCachingDecorator(krajManager, memoryCache);
-                IKrajManager loggingDecorator = new KrajManagerLoggingDecorator(krajManager, logger);
 
-                return loggingDecorator;
+            
+            
 
-            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

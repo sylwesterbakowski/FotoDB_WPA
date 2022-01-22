@@ -1,5 +1,6 @@
 ﻿using FotoDB_WPA.Contexts;
 using FotoDB_WPA.ILogic;
+using FotoDB_WPA.Logic.Design_Patterns.Observer;
 using FotoDB_WPA.Models;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
@@ -17,6 +18,12 @@ namespace FotoDB_WPA.Logic
         {
             _fotoDBContext = fotoDBContext;
         }
+        /// <summary>
+        /// Lista Obserwatorów
+        /// </summary>
+        public List<IAutorModelObserver> Observers = new List<IAutorModelObserver>();
+
+
         public AutorManager AddAutor(AutorModel autorModel)
         {
             //using (var context = new FotoDBContext())
@@ -71,8 +78,12 @@ namespace FotoDB_WPA.Logic
             //    context.SaveChanges();
 
             //}
+            
             _fotoDBContext.Update(autorModel);
             _fotoDBContext.SaveChanges();
+            
+            ///Powiadom Obserwatorów o akcji Update
+            Notify(autorModel);
             return this;
         }
 
@@ -200,6 +211,27 @@ namespace FotoDB_WPA.Logic
             //}
             List<AutorModel> autors = _fotoDBContext.Autors.ToList<AutorModel>();
             return autors;
+        }
+
+        public void Attach(IAutorModelObserver observer)
+        {
+            Observers.Add(observer);
+            Console.WriteLine("Dodano obserwatora");
+        }
+
+        public void Detach(IAutorModelObserver observer)
+        {
+            Observers.Remove(observer);
+            Console.WriteLine("Usunięto obserwatora");
+        }
+
+        public void Notify(AutorModel autormodel)
+        {
+            foreach (var observer in Observers)
+            {
+                observer.UpdateAutor(autormodel);
+                Console.WriteLine("Powiadomiono obserwatora");
+            }
         }
     }
 }
