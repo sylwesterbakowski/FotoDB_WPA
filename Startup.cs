@@ -1,6 +1,7 @@
 using FotoDB_WPA.Contexts;
 using FotoDB_WPA.ILogic;
 using FotoDB_WPA.Logic;
+using FotoDB_WPA.Logic.Design_Patterns.Adapter;
 using FotoDB_WPA.Logic.Design_Patterns.Decorator;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -78,10 +79,20 @@ namespace FotoDB_WPA
                 services.Decorate<IAutorManager, AutorManagerLoggingDecorator>();
             }
 
+            ///Testowanie wzorca Adapter
+            services.AddScoped<IAnalyticsService, AnalyticsService>();
+            if (Convert.ToBoolean(Configuration["AdapterKlasowy"]))
+            {
+                services.AddScoped<IAnalyticsAdapter, AnalyticsAdapterKlasowy>();
+            }
+            else
+            {
+                services.AddScoped<IAnalyticsAdapter, AnalyticsAdapterObiektowy>();
+            }
+            
 
 
-            
-            
+
 
         }
 

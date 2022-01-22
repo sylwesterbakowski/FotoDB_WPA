@@ -1,5 +1,6 @@
 ﻿using FotoDB_WPA.ILogic;
 using FotoDB_WPA.Logic;
+using FotoDB_WPA.Logic.Design_Patterns.Adapter;
 using FotoDB_WPA.Logic.Design_Patterns.Observer;
 using FotoDB_WPA.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -15,10 +16,12 @@ namespace FotoDB_WPA.Controllers
     public class AutorController : Controller
     {
         private readonly IAutorManager _autorManager;
+        private readonly IAnalyticsAdapter _analyticsAdapter;
 
-        public AutorController(IAutorManager autorManager)
+        public AutorController(IAutorManager autorManager, IAnalyticsAdapter analyticsAdapter)
         {
             _autorManager = autorManager;
+            _analyticsAdapter = analyticsAdapter;
         }
         //public IActionResult Index(string sortOrder, string currentFilter, string searchString, int? page)
         public IActionResult Index(
@@ -137,6 +140,16 @@ namespace FotoDB_WPA.Controllers
             //return View(autors.ToPagedList(pageNumber, pageSize));
             return View(autors);
 
+        }
+
+        [HttpPost]
+        public IActionResult SubmitAutors()
+        {
+            List<AutorModel> autors = _autorManager.GetAutors();
+
+            _analyticsAdapter.ProcessAutors(autors);
+
+            return RedirectToAction("Index");
         }
 
         [HttpGet]
