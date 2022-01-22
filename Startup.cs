@@ -4,6 +4,7 @@ using FotoDB_WPA.Logic;
 using FotoDB_WPA.Logic.Design_Patterns.Adapter;
 using FotoDB_WPA.Logic.Design_Patterns.Builder;
 using FotoDB_WPA.Logic.Design_Patterns.Decorator;
+using FotoDB_WPA.Logic.Design_Patterns.Singleton;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -32,8 +33,20 @@ namespace FotoDB_WPA
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<FotoDBContext>
+            if (Convert.ToBoolean(Configuration["BazaSingleton"]))
+            {
+                services.AddDbContext<FotoDBContext>
+                (options => options.UseSqlServer(Configuration.GetConnectionString("Default")), ServiceLifetime.Singleton);
+            }
+            else
+            {
+                services.AddDbContext<FotoDBContext>
                 (options => options.UseSqlServer(Configuration.GetConnectionString("Default")));
+            }
+            //services.AddDbContext<FotoDBContext>
+            //    (options => options.UseSqlServer(Configuration.GetConnectionString("Default")));
+            //services.AddDbContext<FotoDBContext>
+            //    (options => options.UseSqlServer(Configuration.GetConnectionString("Default")), ServiceLifetime.Singleton);
 
             services.AddScoped<IKrajManager, KrajManager>();
             ///Testowanie wzorca Obserwator
@@ -97,7 +110,38 @@ namespace FotoDB_WPA
 
             services.AddScoped<IPlanWystawyDirector, PlanWystawyDirector>();
 
+            ///Testowanie wzorca Singleton
+            ///
+           
+            Console.WriteLine("Próba utworzenia: Singleton klasyczny nr 1");
+            ISingleton clasicSingleton1 = ClasicSingleton.Instance;
+            Console.WriteLine("Próba utworzenia: Singleton klasyczny nr 2");
+            ISingleton clasicSingleton2 = ClasicSingleton.Instance;
+            if (clasicSingleton1 == clasicSingleton2)
+            {
+                Console.WriteLine("Oba wskaŸniki na Singletony klasyczne wskazuj¹ na t¹ sam¹ instancjê, czyli utworzono tylko jedn¹ instancjê Singletona klasycznego");
+            }
 
+            Console.WriteLine("Próba utworzenia: Singleton lazy nr 1");
+            ISingleton lazySingleton1 = LazySingleton.Instance;
+            Console.WriteLine("Próba utworzenia: Singleton lazy nr 2");
+            ISingleton lazySingleton2 = LazySingleton.Instance;
+            if (lazySingleton1 == lazySingleton2)
+            {
+                Console.WriteLine("Oba wskaŸniki na Singletony lazy wskazuj¹ na t¹ sam¹ instancjê, czyli utworzono tylko jedn¹ instancjê Singletona lazy");
+            }
+            if (clasicSingleton1 == lazySingleton2)
+            {
+                Console.WriteLine("Singleton klasyczny i Singleton lazy maj¹ tak¹ sam¹ instancjê, wiêc jest tylko jeden Sigleton");
+            }
+            else
+            {
+                Console.WriteLine("Singleton klasyczny i Singleton lazy maj¹ ró¿ne instancje, wiêc s¹ utworzone dwa ró¿ne Sigletony");
+            }
+
+
+            //services.AddSingleton<ClasicSingleton>();
+            //services.AddSingleton<LazySingleton>();
 
         }
 

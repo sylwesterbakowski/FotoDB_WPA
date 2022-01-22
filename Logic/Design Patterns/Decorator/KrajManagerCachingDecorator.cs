@@ -23,17 +23,17 @@ namespace FotoDB_WPA.Logic.Design_Patterns.Decorator
         }
         public KrajManager AddKraj(KrajModel krajModel)
         {
-            throw new NotImplementedException();
+            return _krajManager.AddKraj(krajModel);
         }
 
         public KrajManager ChangeNazwa(int id, string newNazwa)
         {
-            throw new NotImplementedException();
+            return _krajManager.ChangeNazwa(id, newNazwa);
         }
 
         public KrajModel GetKraj(int id)
         {
-            throw new NotImplementedException();
+            return _krajManager.GetKraj(id);
         }
 
         public List<KrajModel> GetKrajs()
@@ -58,12 +58,12 @@ namespace FotoDB_WPA.Logic.Design_Patterns.Decorator
 
         public KrajManager RemoveKraj(int id)
         {
-            throw new NotImplementedException();
+            return _krajManager.RemoveKraj(id);
         }
 
         public KrajManager UpdateKraj(KrajModel krajModel)
         {
-            throw new NotImplementedException();
+            return _krajManager.UpdateKraj(krajModel);
         }
     }
 }
