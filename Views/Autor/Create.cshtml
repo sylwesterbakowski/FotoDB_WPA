@@ -1,0 +1,59 @@
+﻿@model FotoDB.Models.AutorModel
+
+@{
+    ViewData["Title"] = "Dodaj autora";
+}
+
+<h1>Dodaj autora</h1>
+
+<h4>Utwórz nowego autora w bazie danych</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Nazwisko" class="control-label"></label>
+                <input asp-for="Nazwisko" class="form-control" placeholder="Podaj nazwisko"/>
+                <span asp-validation-for="Nazwisko" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Imie" class="control-label"></label>
+                <input asp-for="Imie" class="form-control" placeholder="Podaj imię"/>
+                <span asp-validation-for="Imie" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+
+                <label asp-for="KrajModelID" class="control-label"></label>
+                @*@{
+            FotoDB.Contexts.FotoDBContext manager = new FotoDB.Contexts.FotoDBContext();
+            List<FotoDB.Models.KrajModel> listKrajs = manager.Krajs.ToList();
+            listKrajs.Sort((x,y) => x.Nazwa.CompareTo(y.Nazwa));
+            //listKrajs.OrderBy(x => x.Nazwa);
+            <select asp-for="KrajModelID" class="form-control">
+                @{
+                    <option value="" disabled hidden selected>Select Kraj</option>
+                    foreach (FotoDB.Models.KrajModel k in listKrajs)
+                    {
+                        <option value="@k.KrajModelID">@k.Nazwa</option>
+                    }
+                }
+            </select>
+        }*@
+                <select asp-for="KrajModelID" class="form-control" asp-items="ViewBag.ListKrajs" ></select>
+                <span asp-validation-for="KrajModelID" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Dodaj" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index" class="btn btn-info">Powrót do listy autorów</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

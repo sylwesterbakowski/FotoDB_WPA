@@ -1,0 +1,44 @@
+﻿@model FotoDB.Models.AutorModel
+
+@{
+    ViewData["Title"] = "Szczegóły autora: " + ViewData.Model.Nazwisko + ViewData.Model.Imie;
+}
+
+<h1>Szczegóły autora: @Html.DisplayFor(model => model.Nazwisko)@Html.DisplayFor(model => model.Imie)</h1>
+
+
+<div>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.AutorModelID)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.AutorModelID)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Nazwisko)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Nazwisko)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Imie)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Imie)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.KrajModel)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.KrajModel.Nazwa)
+            <label class="control-label">@ViewBag.Kraj</label>
+        </dd>
+    </dl>
+</div>
+<div class="btn-group" role="group" aria-label="Basic example">
+    <a asp-action="Edit" asp-route-id="@Model.AutorModelID" class="btn btn-primary">Edytuj</a>
+    <a asp-action="Delete" asp-route-id="@Model.AutorModelID" class="btn btn-danger">Usuń</a>
+    <a asp-action="Index" class="btn btn-info">Powrót do listy autorów</a>
+</div>

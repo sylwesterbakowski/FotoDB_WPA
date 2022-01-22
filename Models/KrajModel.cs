@@ -1,0 +1,20 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Threading.Tasks;
+
+namespace FotoDB_WPA.Models
+{
+    public class KrajModel
+    {
+        public int KrajModelID { get; set; }
+
+        [Required(ErrorMessage = "Nazwa kraju jest wymagana")]
+        public string Nazwa { get; set; }
+        
+        public ICollection<AutorModel> Autors { get; set; }
+
+       // public List<AutorModel> ListaAutorow { get; set; }
+    }
+}

@@ -1,0 +1,87 @@
+﻿@model FotoDB.Models.FotoModel
+
+@{
+    ViewData["Title"] = "Usuń zdjęcie";
+}
+
+<h1>Usuń zdjęcie</h1>
+
+<h3>Czy na pewno chcesz usunąć to zdjęcie z bazy danych?</h3>
+<div>
+    <h4>FotoModel</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.FotoModelID)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.FotoModelID)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.DataWykonania)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.DataWykonania)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.FotoTytul)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.FotoTytul)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.FotoData)
+        </dt>
+        <dd class="col-sm-10">
+            @{
+                string imageData;
+                string extention = Model.FotoRozszerzenie;
+                switch (extention)
+                {
+                    case ".png":
+                        {
+                            imageData = @"data:image / png; base64," + Convert.ToBase64String(Model.FotoData);
+                            break;
+                        }
+                    case ".jpg":
+                        {
+                            imageData = @"data:image / jpg; base64," + Convert.ToBase64String(Model.FotoData);
+                            break;
+                        }
+                    default:
+                        {
+                            imageData = @"data:image / jpeg; base64," + Convert.ToBase64String(Model.FotoData);
+                            break;
+                        }
+                }
+            }
+            <img src=@imageData asp-append-version="true" width="250px" />
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.FotoRozszerzenie)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.FotoRozszerzenie)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Opis)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Opis)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.AutorModel)
+        </dt>
+        <dd class="col-sm-10">
+            @*@Html.DisplayFor(model => model.AutorModel.Imie)*@
+            <label class="control-label">@ViewBag.Autor</label>
+        </dd>
+    </dl>
+    
+    <form asp-action="DeleteConfirm" asp-route-id="@Model.FotoModelID">
+        <input type="hidden" asp-for="FotoModelID" />
+        <input type="submit" value="Usuń" class="btn btn-danger" />
+        <a asp-action="Details" asp-route-id="@Model.FotoModelID" class="btn btn-info">Powrót do szczegółów</a>
+        <a asp-action="Index" class="btn btn-info">Powrót do listy zdjęć</a>
+    </form>
+</div>
