@@ -2,6 +2,7 @@ using FotoDB_WPA.Contexts;
 using FotoDB_WPA.ILogic;
 using FotoDB_WPA.Logic;
 using FotoDB_WPA.Logic.Design_Patterns.Adapter;
+using FotoDB_WPA.Logic.Design_Patterns.Builder;
 using FotoDB_WPA.Logic.Design_Patterns.Decorator;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -89,8 +90,12 @@ namespace FotoDB_WPA
             {
                 services.AddScoped<IAnalyticsAdapter, AnalyticsAdapterObiektowy>();
             }
-            
 
+            ///Testowanie wzorca Builder
+            services.AddScoped<IPlanWystawyBuilder, PermanentPlanWystawyBuilder>();
+            services.AddScoped<IPlanWystawyBuilder, TemporaryPlanWystawyBuilder>();
+
+            services.AddScoped<IPlanWystawyDirector, PlanWystawyDirector>();
 
 
 
