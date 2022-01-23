@@ -4,6 +4,7 @@ using FotoDB_WPA.Logic;
 using FotoDB_WPA.Logic.Design_Patterns.Adapter;
 using FotoDB_WPA.Logic.Design_Patterns.Builder;
 using FotoDB_WPA.Logic.Design_Patterns.Decorator;
+using FotoDB_WPA.Logic.Design_Patterns.Mediator;
 using FotoDB_WPA.Logic.Design_Patterns.Singleton;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -142,6 +143,16 @@ namespace FotoDB_WPA
 
             //services.AddSingleton<ClasicSingleton>();
             //services.AddSingleton<LazySingleton>();
+
+
+            ///Testowanie wzorca Mediator
+            ///
+            services.AddScoped<INotificationFotoModelService, NotyficationFotoModelService>();
+            services.AddScoped<IShoppingFotoModelService, ShoppingFotoModelService>();
+            services.AddScoped<IFotoModelService, FotoModelService>();
+
+            services.AddScoped<IShoppingFotoModelMediator, ShoppingFotoModelMediator>();
+
 
         }
 

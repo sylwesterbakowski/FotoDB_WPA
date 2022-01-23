@@ -1,0 +1,88 @@
+﻿@model FotoDB_WPA.Models.FotoModel
+
+@{
+    ViewData["Title"] = "Koszyk zdjęć";
+}
+
+<h1>Koszyk zdjęć</h1>
+
+
+<h1>Szczegóły zdjęcia: @Html.DisplayFor(model => model.FotoTytul)@Html.DisplayFor(model => model.FotoRozszerzenie)</h1>
+
+<a asp-area="" asp-controller="ShoppingFotoModelControler" asp-action="AddToBasket" asp-route-id="model.FotoModelID">Dodaj do koszyka</a>
+
+<div>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.FotoModelID)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.FotoModelID)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.DataWykonania)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.DataWykonania)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.FotoTytul)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.FotoTytul)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.FotoData)
+        </dt>
+        <dd class="col-sm-10">
+            @{
+                string imageData;
+                string extention = Model.FotoRozszerzenie;
+                switch (extention)
+                {
+                    case ".png":
+                        {
+                            imageData = @"data:image / png; base64," + Convert.ToBase64String(Model.FotoData);
+                            break;
+                        }
+                    case ".jpg":
+                        {
+                            imageData = @"data:image / jpg; base64," + Convert.ToBase64String(Model.FotoData);
+                            break;
+                        }
+                    default:
+                        {
+                            imageData = @"data:image / jpeg; base64," + Convert.ToBase64String(Model.FotoData);
+                            break;
+                        }
+                }
+            }
+            <img src=@imageData asp-append-version="true" width="250px" />
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.FotoRozszerzenie)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.FotoRozszerzenie)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Opis)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Opis)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.AutorModel)
+        </dt>
+        <dd class="col-sm-10">
+            @*@Html.DisplayFor(model => model.AutorModel.Imie)*@
+            <label class="control-label">@ViewBag.Autor</label>
+        </dd>
+    </dl>
+</div>
+@*<div class="btn-group" role="group" aria-label="Basic example">
+        <a asp-action="Edit" asp-route-id="@Model.FotoModelID" class="btn btn-primary">Edytuj</a>
+        <a asp-action="Delete" asp-route-id="@Model.FotoModelID" class="btn btn-danger">Usuń</a>
+        <a asp-action="Index" class="btn btn-info">Powrót do listy zdjęć</a>
+    </div>*@
